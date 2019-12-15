@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import '../../App.css';
+import styles from './GameField.module.css';
 import {connect} from "react-redux";
 import {nextQuestion, startGame, endedGame} from "../../redux/reducer";
 import ResultPage from "../resultPage/ResultPage";
@@ -34,10 +34,13 @@ function GameField(props) {
     }
 
     return (
-        <article>
-            {!props.isStartGame? <button onClick={props.startGame}>Start game</button>:
-                <div>{question}</div>}
-            {props.isGameOver && ((props.numberOfIncorrectAnswer + props.numberOfRightAnswer))?<ResultPage/>:null}
+        <article className={styles.fieldGame}>
+            {!props.isStartGame ?<button onClick={props.startGame} className={styles.buttonStart}>
+                    Start game
+            </button>:
+                <div className={styles.field}>{question}</div>}
+            {props.isGameOver && ((props.numberOfIncorrectAnswer + props.numberOfRightAnswer))
+                ?<ResultPage/>:null}
         </article>
     );
 }

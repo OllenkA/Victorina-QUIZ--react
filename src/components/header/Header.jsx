@@ -1,11 +1,10 @@
 import React from 'react';
-import '../../App.css';
+import styles from './Header.module.css';
 
 function Header() {
     return (
-        <header className="Header">
-            <h1>QUIZ</h1>
-
+        <header className={styles.header}>
+            <h1 className={styles.title}>QUIZ</h1>
         </header>
     );
 }

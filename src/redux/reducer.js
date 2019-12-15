@@ -109,9 +109,6 @@ const reducer = (state = initialState, action) => {
             let newScore = state.questions.find(el => {
                 return action.text === el.question
             }).answers.find(el => (action.answer === el.answer && el.correct === true));
-            // let a = newScore.answers.find(el => {
-            //     return (action.answer === el.answer && el.correct === true)
-            // });
             return {
                 ...state,
                 questions: newArr,
@@ -125,8 +122,6 @@ const reducer = (state = initialState, action) => {
                 isGameOver: true,
             };
         case SCORING:
-            debugger
-            // let newScore = state.questions.filter(el => action.text === el.question).answers.find(el => action.answer === el.answer && el.correct === true);
             return {
                 ...state,
 

@@ -1,13 +1,11 @@
 import React from 'react';
-import '../../App.css';
+import styles from './ResultPage.module.css';
 import {connect} from "react-redux";
 
 function ResultPage(props) {
 
-
-
     return (
-        <section className="result">
+        <section className={styles.wrapper}>
             <article>
                 {(props.numberOfRightAnswer>=props.numberOfIncorrectAnswer)?
                     <section>
