@@ -1,17 +1,18 @@
 export const START_GAME = 'START_GAME';
 export const NEXT_QUESTION = 'NEXT_QUESTION';
-export const SCORING = 'SCORING';
 export const ENDED_GAME = 'ENDED_GAME';
+export const START_TIMER = 'START_TIMER';
+// export const CLEAR_TIMER = 'CLEAR_TIMER';
 
 const initialState = {
     questions: [
         {
             id: 1,
-            question: 'Сколько на Земле материков начинаются на букву «А»?',
+            question: 'Как называется синтаксическое расширение JavaScript?',
             answers: [
-                {id: 1, answer: 2, correct: false},
-                {id: 2, answer: 5, correct: true},
-                {id: 3, answer: 7, correct: false},
+                {id: 1, answer: 'TypeScript', correct: false},
+                {id: 2, answer: 'JSX', correct: true},
+                {id: 3, answer: 'CoffeeScript', correct: false},
             ],
             visible: false
         },
@@ -19,9 +20,9 @@ const initialState = {
             id: 2,
             question: 'Сколько суток составляют високосный год?',
             answers: [
-                {id: 1, answer: 336, correct: false},
-                {id: 2, answer: 365, correct: false},
-                {id: 3, answer: 366, correct: true},
+                {id: 1, answer: '336', correct: false},
+                {id: 2, answer: '365', correct: false},
+                {id: 3, answer: '366', correct: true},
             ],
             visible: false
         },
@@ -29,22 +30,34 @@ const initialState = {
             id: 3,
             question: 'Сколько музыкантов в квинтете?',
             answers: [
-                {id: 1, answer: 5, correct: true},
-                {id: 2, answer: 4, correct: false},
-                {id: 3, answer: 6, correct: false},
+                {id: 1, answer: '5', correct: true},
+                {id: 2, answer: '4', correct: false},
+                {id: 3, answer: '6', correct: false},
             ],
             visible: false
         },
         {
             id: 4, question: 'Сколько холодных цветов в радуге?',
             answers: [
-                {id: 1, answer: 6, correct: false},
-                {id: 2, answer: 3, correct: true},
-                {id: 3, answer: 2, correct: false},
+                {id: 1, answer: '6', correct: false},
+                {id: 2, answer: '3', correct: true},
+                {id: 3, answer: '2', correct: false},
+            ],
+            visible: false
+        },
+        {
+            id: 5,
+            question: 'Они позволяют разбить интерфейс на независимые части, про которые легко думать в отдельности.',
+            answers: [
+                {id: 1, answer: 'Элементы', correct: false},
+                {id: 2, answer: 'Компоненты', correct: true},
+                {id: 3, answer: 'Пропсы', correct: false},
             ],
             visible: false
         },
     ],
+    time: 30,
+    timer: 0,
     isStartGame: false,
     numberOfRightAnswer: 0,
     numberOfIncorrectAnswer: 0,
@@ -52,7 +65,7 @@ const initialState = {
 };
 
 const shuffle = (arr) => {
-    for(let i = 0; i<arr.length; i++) {
+    for (let i = 0; i < arr.length; i++) {
         const random = Math.floor(Math.random() * arr.length);
         const temp = arr[i];
         arr[i] = arr[random];
@@ -83,7 +96,7 @@ const reducer = (state = initialState, action) => {
             let newStartArray = shuffle(state.questions.map(el => ({...el, answers: shuffle([...el.answers])})));
             newStartArray[0].visible = true;
 
-                // shuffle([...state.questions]);
+            // shuffle([...state.questions]);
             return {
                 ...state,
                 questions: newStartArray,
@@ -120,15 +133,36 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 isStartGame: false,
                 isGameOver: true,
+                time: 30,
+                timer: 0,
             };
-        case SCORING:
+        case START_TIMER:
             return {
                 ...state,
-
+                time: state.time - 1,
+                timer: action.timer,
             };
+        // case CLEAR_TIMER:
+        //     return {
+        //         ...state,
+        //         time: 30,
+        //         timer: 0,
+        //     };
         default:
             return state;
     }
+};
+
+export const startGameTC = () => async (dispatch, getState) => {
+    let timer = await setInterval(() => {
+        dispatch(startTimer(timer))
+    }, 1000);
+    dispatch(startGame());
+};
+
+export const finishGameTC = () => (dispatch, getState) => {
+    clearInterval(getState().timer);
+    dispatch(endedGame());
 };
 
 // export const startGameWithComputerTC = (id) => async (dispatch, getState) => {
@@ -144,7 +178,9 @@ const reducer = (state = initialState, action) => {
 // };
 
 export const startGame = () => ({type: START_GAME});
+export const startTimer = (timer) => ({type: START_TIMER, timer});
 export const nextQuestion = (text, answer) => ({type: NEXT_QUESTION, text, answer});
 export const endedGame = () => ({type: ENDED_GAME});
+// export const clearTimer = () => ({type: CLEAR_TIMER});
 
 export default reducer;

@@ -12,3 +12,13 @@
 .field{
 
 }
+
+.question{
+    margin: 20px;
+    font-weight: bolder;
+}
+
+.answers{
+    margin: 15px;
+
+}
