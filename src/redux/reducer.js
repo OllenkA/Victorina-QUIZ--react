@@ -2,7 +2,7 @@ export const START_GAME = 'START_GAME';
 export const NEXT_QUESTION = 'NEXT_QUESTION';
 export const ENDED_GAME = 'ENDED_GAME';
 export const START_TIMER = 'START_TIMER';
-// export const CLEAR_TIMER = 'CLEAR_TIMER';
+
 
 const initialState = {
     questions: [
@@ -134,7 +134,7 @@ const reducer = (state = initialState, action) => {
                 isStartGame: false,
                 isGameOver: true,
                 time: 30,
-                timer: 0,
+                // timer: 0,
             };
         case START_TIMER:
             return {
@@ -142,18 +142,12 @@ const reducer = (state = initialState, action) => {
                 time: state.time - 1,
                 timer: action.timer,
             };
-        // case CLEAR_TIMER:
-        //     return {
-        //         ...state,
-        //         time: 30,
-        //         timer: 0,
-        //     };
         default:
             return state;
     }
 };
 
-export const startGameTC = () => async (dispatch, getState) => {
+export const startGameTC = () => async (dispatch) => {
     let timer = await setInterval(() => {
         dispatch(startTimer(timer))
     }, 1000);
@@ -161,7 +155,7 @@ export const startGameTC = () => async (dispatch, getState) => {
 };
 
 export const finishGameTC = () => (dispatch, getState) => {
-    clearInterval(getState().timer);
+    clearInterval(getState().main.timer);
     dispatch(endedGame());
 };
 
@@ -181,6 +175,5 @@ export const startGame = () => ({type: START_GAME});
 export const startTimer = (timer) => ({type: START_TIMER, timer});
 export const nextQuestion = (text, answer) => ({type: NEXT_QUESTION, text, answer});
 export const endedGame = () => ({type: ENDED_GAME});
-// export const clearTimer = () => ({type: CLEAR_TIMER});
 
 export default reducer;
