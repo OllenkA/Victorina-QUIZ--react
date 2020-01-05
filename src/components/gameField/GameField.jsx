@@ -4,6 +4,7 @@ import {connect} from "react-redux";
 import {nextQuestion, startGameTC, finishGameTC} from "../../redux/reducer";
 import ResultPage from "../resultPage/ResultPage";
 
+
 function GameField(props) {
     const [reply, setAnswer] = useState('');
 
@@ -31,7 +32,7 @@ function GameField(props) {
         </article>
     });
 
-    if((!props.questions.find(el => el.visible === true) && props.time === 0) || props.time === 0){
+    if((!props.questions.find(el => el.visible === true) && props.isStartGame) || props.time === 0){
         props.finishGameTC();
     }
 
