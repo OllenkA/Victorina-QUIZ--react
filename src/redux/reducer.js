@@ -93,10 +93,10 @@ const reducer = (state = initialState, action) => {
             //
             //     }
             // })
-            let newStartArray = shuffle(state.questions.map(el => ({...el, answers: shuffle([...el.answers])})));
+            let newStartArray = shuffle(state.questions.map(el => (
+                {...el, answers: shuffle([...el.answers])})));
             newStartArray[0].visible = true;
 
-            // shuffle([...state.questions]);
             return {
                 ...state,
                 questions: newStartArray,
@@ -129,8 +129,15 @@ const reducer = (state = initialState, action) => {
                 numberOfIncorrectAnswer: !newScore ? state.numberOfIncorrectAnswer + 1 : state.numberOfIncorrectAnswer,
             };
         case ENDED_GAME:
+            let newArrayAfterEndedGame = state.questions.map(el => {
+                return{
+                    ...el,
+                    visible: false,
+                }
+            });
             return {
                 ...state,
+                questions: newArrayAfterEndedGame,
                 isStartGame: false,
                 isGameOver: true,
                 time: 30,
@@ -158,18 +165,6 @@ export const finishGameTC = () => (dispatch, getState) => {
     clearInterval(getState().main.timer);
     dispatch(endedGame());
 };
-
-// export const startGameWithComputerTC = (id) => async (dispatch, getState) => {
-//     await dispatch(onMovePlayer(id));
-//     let winner = await calculateWinner(getState().main.squares);
-//     if (!winner) {
-//         setTimeout(() => {
-//             dispatch(startGameWithComputer());
-//         }, 2000);
-//     } else {
-//         dispatch(setWinner(winner))
-//     }
-// };
 
 export const startGame = () => ({type: START_GAME});
 export const startTimer = (timer) => ({type: START_TIMER, timer});

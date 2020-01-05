@@ -24,12 +24,14 @@ function GameField(props) {
                 <input type="radio" name="answer"
                                        checked={reply === answer.answer}
                                        value={answer.answer}
-                                       onChange={getAnswer}/>{answer.answer}</div>})}
+                                       onChange={getAnswer} id={i}/>
+                <label htmlFor={i}>{answer.answer}</label>
+            </div>})}
             <button onClick={() => clickOnTheButtonNext(el.question, reply)}>Next</button>
         </article>
     });
 
-    if(!props.questions.find(el => el.visible === true) || props.time === 0){
+    if((!props.questions.find(el => el.visible === true) && props.time === 0) || props.time === 0){
         props.finishGameTC();
     }
 
@@ -42,7 +44,8 @@ function GameField(props) {
                     <div>0:{props.time}</div>
                     <div>{question}</div>
                 </div>}
-            {props.isGameOver && ((props.numberOfIncorrectAnswer + props.numberOfRightAnswer))
+            {props.isGameOver && ((props.numberOfIncorrectAnswer + props.numberOfRightAnswer) === props.questions.length
+            || props.numberOfIncorrectAnswer + props.numberOfRightAnswer === 0)
                 ?<ResultPage/>:null}
         </article>
     );
